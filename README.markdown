@@ -19,6 +19,9 @@ This is available as a JAR file from the downloads area of this GitHub repo.
 The project itself is set up as an Android library project,
 in case you wish to use the source code in that fashion.
 
+Alex Birkett is maintaining a more advanced version of the
+`LocationPoller` concept in [his fork](https://github.com/alexbirkett/cwac-locpoll).
+
 Usage
 -----
 First, you need to add the JAR or Android library project to
