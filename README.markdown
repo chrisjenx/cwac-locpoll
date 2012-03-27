@@ -19,6 +19,9 @@ This is available as a JAR file from the downloads area of this GitHub repo.
 The project itself is set up as an Android library project,
 in case you wish to use the source code in that fashion.
 
+Alex Birkett is maintaining a more advanced version of the
+`LocationPoller` concept in [his fork](https://github.com/alexbirkett/cwac-locpoll).
+
 Usage
 -----
 First, you need to add the JAR or Android library project to
@@ -120,6 +123,11 @@ If you have questions regarding the use of this code, please post a question
 on [StackOverflow](http://stackoverflow.com/questions/ask) tagged with `commonsware` and `android`. Be sure to indicate
 what CWAC module you are having issues with, and be sure to include source code 
 and stack traces if you are encountering crashes.
+
+If you have encountered what is clearly a bug, please post an [issue](https://github.com/commonsguy/cwac-locpoll/issues). Be certain to include complete steps
+for reproducing the issue.
+
+Do not ask for help via Twitter.
 
 Release Notes
 -------------
