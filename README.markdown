@@ -100,7 +100,7 @@ This project has no dependencies.
 
 Version
 -------
-This is version 0.2 of this module, meaning it is less new than before.
+This is version 0.2.1 of this module, meaning it is even less new than before.
 
 Demo
 ----
@@ -131,5 +131,6 @@ Do not ask for help via Twitter.
 
 Release Notes
 -------------
+v0.2.1: added more protection against under-locked `WakeLock`s
 v0.2.0: added `EXTRA_LASTKNOWN` support
 v0.1.0: initial release

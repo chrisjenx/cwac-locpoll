@@ -56,7 +56,9 @@ public class WakefulThread extends HandlerThread {
    * runs
    */
   protected void onPostExecute() {
-    lock.release();
+    if (lock.isHeld()) {
+      lock.release();
+    }
 
     if (!lock.isHeld()) {
       onUnlocked();

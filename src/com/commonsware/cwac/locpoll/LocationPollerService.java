@@ -47,9 +47,8 @@ public class LocationPollerService extends Service {
    * use a partial WakeLock since we only need the CPU on,
    * not the screen.
    */
-  synchronized private static PowerManager.WakeLock getLock(
-                                                            Context context) {
-    if (lockStatic==null) {
+  synchronized private static PowerManager.WakeLock getLock(Context context) {
+    if (lockStatic == null) {
       PowerManager mgr=
           (PowerManager)context.getApplicationContext()
                                .getSystemService(Context.POWER_SERVICE);
@@ -74,15 +73,15 @@ public class LocationPollerService extends Service {
     Intent toBroadcast=
         (Intent)i.getExtras().get(LocationPoller.EXTRA_INTENT);
 
-    if (provider==null) {
+    if (provider == null) {
       Log.e("LocationPoller", "Invalid Intent -- has no provider");
     }
-    else if (toBroadcast==null) {
+    else if (toBroadcast == null) {
       Log.e("LocationPoller",
             "Invalid Intent -- has no Intent to broadcast");
     }
     else {
-      getLock(ctxt).acquire();
+      getLock(ctxt.getApplicationContext()).acquire();
 
       i.setClass(ctxt, LocationPollerService.class);
 
@@ -119,6 +118,12 @@ public class LocationPollerService extends Service {
    */
   @Override
   public int onStartCommand(Intent intent, int flags, int startId) {
+    PowerManager.WakeLock lock=getLock(this.getApplicationContext());
+
+    if (!lock.isHeld() || (flags & START_FLAG_REDELIVERY) != 0) {
+      lock.acquire();
+    }
+
     String provider=
         intent.getStringExtra(LocationPoller.EXTRA_PROVIDER);
     Intent toBroadcast=
@@ -126,8 +131,7 @@ public class LocationPollerService extends Service {
 
     toBroadcast.setPackage(getPackageName());
 
-    new PollerThread(getLock(this), locMgr, provider, toBroadcast)
-                                                                  .start();
+    new PollerThread(lock, locMgr, provider, toBroadcast).start();
 
     return(START_REDELIVER_INTENT);
   }
