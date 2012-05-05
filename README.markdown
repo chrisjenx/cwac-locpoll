@@ -131,6 +131,11 @@ Do not ask for help via Twitter.
 
 Release Notes
 -------------
-v0.2.1: added more protection against under-locked `WakeLock`s
-v0.2.0: added `EXTRA_LASTKNOWN` support
-v0.1.0: initial release
+- v0.2.1: added more protection against under-locked `WakeLock`s
+- v0.2.0: added `EXTRA_LASTKNOWN` support
+- v0.1.0: initial release
+
+Who Made This?
+--------------
+<a href="http://commonsware.com">![CommonsWare](http://commonsware.com/images/logo.png)</a>
+
