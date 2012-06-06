@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="ACTIVITY_ENTRY_NAME" default="help">
+<project name="LocationPoller" default="help">
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
@@ -79,7 +79,66 @@
          In all cases you must update the value of version-tag below to read 'custom' instead of an integer,
          in order to avoid having your file be overridden by tools such as "android update project"
     -->
-    <!-- version-tag: 1 -->
+    <!-- version-tag: custom -->
     <import file="${sdk.dir}/tools/ant/build.xml" />
+<path id="android.libraries.src"><path refid="project.libraries.src" /></path>
+    <path id="android.libraries.jars"><path refid="project.libraries.jars" /></path>
+
+    <target name="dist-dir">
+        <mkdir dir="dist"/>
+    </target>
+
+    <target name="dist-full" depends="dist-dir">
+        <delete file="dist/CWAC-LocationPoller-full.zip" />
+        <zip destfile="dist/CWAC-LocationPoller-full.zip">
+            <zipfileset
+                dir="."
+                prefix="CWAC-LocationPoller"
+                includes="**"
+                excludes="bin/**, dist/**, gen/**, .git/**, .gitignore, demo/bin/**, demo/gen/**"
+            />
+        </zip>
+    </target>
+
+    <target name="dist-lite" depends="dist-dir">
+        <delete file="dist/CWAC-LocationPoller-lite.zip" />
+        <zip destfile="dist/CWAC-LocationPoller-lite.zip">
+            <zipfileset
+                dir="."
+                prefix="CWAC-LocationPoller"
+                includes="**"
+                excludes="bin/**, dist/**, gen/**, .git/**, .gitignore, demo/**"
+            />
+        </zip>
+    </target>
+
+    <target name="jar" depends="debug">
+        <jar
+            destfile="bin/CWAC-LocationPoller.jar"
+            basedir="bin/classes"
+        />
+    </target>
+
+    <target name="dist-jar" depends="dist-dir, jar">
+        <delete file="dist/CWAC-LocationPoller-jar.zip" />
+        <copy file="bin/CWAC-LocationPoller.jar" todir="libs"/>
+        <mkdir dir="tmp" />
+        <mkdir dir="tmp/src" />
+        <zip destfile="dist/CWAC-LocationPoller-jar.zip">
+            <zipfileset
+                dir="."
+                prefix="CWAC-LocationPoller"
+                includes="**"
+                excludes="tmp/**, bin/**, dist/**, gen/**, .git/**, src/**, .gitignore, demo/**"
+            />
+            <zipfileset
+                dir="tmp"
+                prefix="CWAC-LocationPoller"
+                includes="src/"
+            />
+        </zip>
+        <delete dir="tmp"/>
+        <delete file="libs/CWAC-LocationPoller.jar" />
+    </target>
 
 </project>
