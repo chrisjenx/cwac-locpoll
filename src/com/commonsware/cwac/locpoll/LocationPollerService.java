@@ -221,7 +221,15 @@ public class LocationPollerService extends Service {
       };
 
       handler.postDelayed(onTimeout, TIMEOUT);
-      locMgr.requestLocationUpdates(provider, 0, 0, listener);
+      
+      try {
+        locMgr.requestLocationUpdates(provider, 0, 0, listener);
+      }
+      catch (IllegalArgumentException e) {
+        // see http://code.google.com/p/android/issues/detail?id=21237
+        Log.w(getClass().getSimpleName(), "Exception requesting updates -- may be emulator issue", e);
+        quit();
+      }
     }
 
     /**
