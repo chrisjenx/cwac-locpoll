@@ -29,6 +29,16 @@ public class LocationPoller extends BroadcastReceiver {
   public static final String EXTRA_LOCATION="com.commonsware.cwac.locpoll.EXTRA_LOCATION";
   public static final String EXTRA_PROVIDER="com.commonsware.cwac.locpoll.EXTRA_PROVIDER";
   public static final String EXTRA_LASTKNOWN="com.commonsware.cwac.locpoll.EXTRA_LASTKNOWN";
+  	/**
+	 * If this is returned true (defaults to false unless provider is explicitly
+	 * NOT enabled), then the provider coud not be enabled
+	 */
+	public static final String EXTRA_ERROR_PROVIDER_DISABLED = "com.commonsware.cwac.locpoll.EXTRA_ERROR_PROV_DIS";
+	/**
+	 * Optional Timeout - Pass millis as a long. defaults to 2 mins. wouldnt
+	 * suggest anything less than 30 seconds esp with GPS.
+	 */
+	public static final String EXTRA_TIMEOUT = "com.commonsware.cwac.locpoll.EXTRA_TIMEOUT";
 
   /**
     * Standard entry point for a BroadcastReceiver. Delegates

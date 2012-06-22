@@ -38,7 +38,8 @@ import android.util.Log;
 public class LocationPollerService extends Service {
   private static final String LOCK_NAME_STATIC=
       "com.commonsware.cwac.locpoll.LocationPoller";
-  private static final int TIMEOUT=120000; // two minutes
+	private static final int DEFAULT_TIMEOUT = 120000; // two minutes
+	private static int TIMEOUT = DEFAULT_TIMEOUT;
   private static volatile PowerManager.WakeLock lockStatic=null;
   private LocationManager locMgr=null;
 
@@ -128,6 +129,8 @@ public class LocationPollerService extends Service {
         intent.getStringExtra(LocationPoller.EXTRA_PROVIDER);
     Intent toBroadcast=
         (Intent)intent.getExtras().get(LocationPoller.EXTRA_INTENT);
+		TIMEOUT = (int) intent.getLongExtra(LocationPoller.EXTRA_TIMEOUT,
+				DEFAULT_TIMEOUT);
 
     toBroadcast.setPackage(getPackageName());
 
@@ -208,11 +211,30 @@ public class LocationPollerService extends Service {
      */
     @Override
     protected void onPreExecute() {
+
+			// Added in enabled check to even check if there is a provider
+			// enabled.
+			if (!locMgr.isProviderEnabled(provider)) {
+				// There is no provider so fail with the LKL if possible
+				Intent toBroadcast = new Intent(intentTemplate);
+				toBroadcast.putExtra(LocationPoller.EXTRA_ERROR,
+						"Location Provider disabled!");
+				toBroadcast.putExtra(
+						LocationPoller.EXTRA_ERROR_PROVIDER_DISABLED, true);
+				toBroadcast.putExtra(LocationPoller.EXTRA_LASTKNOWN,
+						locMgr.getLastKnownLocation(provider));
+				sendBroadcast(toBroadcast);
+				quit();
+				return;
+			}
+
       onTimeout=new Runnable() {
         public void run() {
           Intent toBroadcast=new Intent(intentTemplate);
 
           toBroadcast.putExtra(LocationPoller.EXTRA_ERROR, "Timeout!");
+          toBroadcast.putExtra(
+					LocationPoller.EXTRA_ERROR_PROVIDER_DISABLED, false);
           toBroadcast.putExtra(LocationPoller.EXTRA_LASTKNOWN,
                                locMgr.getLastKnownLocation(provider));
           sendBroadcast(toBroadcast);
